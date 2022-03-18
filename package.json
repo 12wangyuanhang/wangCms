@@ -8,9 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^1.0.0",
     "element-plus": "^2.0.2",
+    "node-sass": "^7.0.1",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.0-beta.13"
+    "vue-router": "^4.0.0-beta.13",
+    "vxe-table": "^4.2.1",
+    "xe-utils": "^3.5.4"
   },
   "devDependencies": {
     "@types/node": "^17.0.18",

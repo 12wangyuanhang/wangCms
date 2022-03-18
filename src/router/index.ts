@@ -1,7 +1,7 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
@@ -10,13 +10,35 @@ const router = createRouter({
         {
             path: '/home',
             name: 'home',
-            component: () => import('@/views/home.vue')
+            component: () => import('@/views/home.vue'),
+            children:[
+                {
+                    path:'test',
+                    name:'Test',
+                    component: () => import('../views/test.vue')
+                },
+                {
+                    path:'button',
+                    name:'Button',
+                    component: () => import('../views/button.vue')
+                },
+                {
+                    path:'demo',
+                    name:'Demo',
+                    component: () => import('../views/demo.vue')
+                },
+            ]
         },
         {
             path: '/button',
             name: 'button',
             component: () => import('@/views/button.vue')
-        }
+        },
+        // {
+        //     path: '/test',
+        //     name: 'Test',
+        //     component: () => import('@/views/test.vue')
+        // }
     ]
 })
 
