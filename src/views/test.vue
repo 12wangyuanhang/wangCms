@@ -25,10 +25,10 @@
     </div>
 </template>
 
-<script >
+<script lang="jsx">
 import SearchBarMod from '@/components/searchBar/searchBarMod.vue';
 import TableMod from '@/components/tableMod/index.vue';
-import {getCurrentInstance} from 'vue';
+import {getCurrentInstance, registerRuntimeCompiler} from 'vue';
 export default {
     name:'test',
     components:{
@@ -119,7 +119,15 @@ export default {
                 {
                     searchType:'typeInput',
                     searchCode:'linkId',
-                    searchLabel:'链路Id',
+                    searchLabel:()=><div style="color:red;">链路Id</div>,
+                    privateData:{
+                        placeholder:'链路Id'
+                    },
+                },
+                {
+                    searchType:'typeInput',
+                    searchCode:'linkId',
+                    searchLabel:'',
                     privateData:{
                         placeholder:'链路Id'
                     },
@@ -202,6 +210,7 @@ export default {
         this.searchEvent();
     },
     methods:{
+        
         doSearch(){
             this.tablePage.currentPage = 1
             this.findList();

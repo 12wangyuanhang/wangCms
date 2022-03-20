@@ -4,7 +4,7 @@ import ChooseMod from '../chooseMod/index.vue';
 import tools from '../../utils/tools'
 interface SearchBarDataMod {
     searchType:string,
-    searchLabel?:string,
+    searchLabel?:any,
     searchCode:string,
     placeHolder?:string,
     span?:number,
@@ -58,10 +58,17 @@ export default defineComponent({
                 <>
                     {
                         searchBarData && searchBarData.map((item,index)=>{
-                            let newItem = tools.searchBarToos(item);
+                            const newItem = tools.searchBarToos(item);
+                            const getLabelWidth = (item:SearchBarDataMod) => {
+                                if(item.searchLabel){
+                                    return item.labelWidth || 80
+                                } else {
+                                    return '0px'
+                                }
+                            }
                             return (
                                 <el-col span={6}>
-                                    <el-form-item labelWidth={item.labelWidth||80} v-slots={labelSlot(item.searchLabel)}>
+                                    <el-form-item labelWidth={getLabelWidth(item)} v-slots={labelSlot(item.searchLabel)}>
                                         <ChooseMod query={query} item={newItem}/>
                                     </el-form-item>
                                 </el-col>
@@ -87,12 +94,20 @@ export default defineComponent({
         }
 
         const labelSlot = (label:any) =>{
-            return {
-                label:()=>(
-                    <>
-                        <div>{label}</div>
-                    </>
-                )
+            console.log(label,34445)
+            const type = tools.typeCheck(label);
+            if(type == '[object Function]' || type == '[object AsyncFunction]'){
+                return {
+                    label:()=> label(),
+                }
+            }else {
+                return {
+                    label:()=>(
+                        <>
+                            <div>{label}</div>
+                        </>
+                    )
+                }
             }
         }
         const onSubmit = () => {

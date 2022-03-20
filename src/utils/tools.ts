@@ -13,6 +13,10 @@ class Tools {
         return newItem
     }
 
+    typeCheck(type:any){
+        return Object.prototype.toString.call(type);
+    }
+
 }
 
 export default new Tools();
