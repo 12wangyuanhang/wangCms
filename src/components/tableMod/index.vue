@@ -99,7 +99,6 @@
                     }
                     return reItem
                 })
-                console.log(this.tableBtnData,900000000)
                 // this.gridOptions.columns.push({ title: '操作', width: 200, slots:{ default: 'operate' } })
                 this.gridOptions.columns.unshift({ type: 'checkbox', width: 50 })
             },
@@ -108,7 +107,6 @@
                     this.gridOptions.data = this.tableData;
                 } else {
                     let num = Math.floor(this.tableData.length/this.tablePage.pageSize);
-                    console.log(this.tablePage.pageSize, 'num');
                     if(this.tablePage.pageSize < this.tableData.length){
                         if(num >= this.tablePage.currentPage){
                             this.gridOptions.data = this.tableData.slice((this.tablePage.currentPage-1)*this.tablePage.pageSize,this.tablePage.currentPage*this.tablePage.pageSize)

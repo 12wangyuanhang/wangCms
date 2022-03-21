@@ -11,19 +11,22 @@ export default defineComponent({
             passWord: '',
             userName:''
         })
-        const validatePass = (rule: any, value: any, callback: any) => {
-            if (value === '') {
-                callback(new Error('请输入密码'))
-            } else {
-                callback()
-            }
-        }
+        // const validatePass = (rule: any, value: any, callback: any) => {
+        //     if (value === '') {
+        //         callback(new Error('请输入密码'))
+        //     } else {
+        //         callback()
+        //     }
+        // }
        
         const rules = reactive({
             userName:[
                 { required: true, message: '请输入用户名', trigger: 'blur' },
             ],
-            passWord: [{ validator: validatePass, trigger: 'blur' }],
+            passWord: [
+                // { validator: validatePass, trigger: 'blur' },
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                ],
         })
         
         let obj = {

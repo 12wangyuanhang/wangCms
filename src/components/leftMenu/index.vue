@@ -7,6 +7,7 @@
         Setting,
     } from '@element-plus/icons-vue';
     import { useRouter } from 'vue-router';
+    import menuList from './setMenu';
     export default defineComponent({
         components:{
             Location,
@@ -16,13 +17,29 @@
         },
         setup(){
             const router = useRouter();
+            const routerList:any = router.options.routes[1].children;
+
+            function handleMenuList(list:object[],parentPath:string){
+                const newList:any = list.map((item:any)=>{
+                    let path = '';
+                    if(parentPath){
+                        path = parentPath + '/' + item.path;
+                    } else {
+                        path = '/home/'+item.path;
+                    }
+                    let newItem = {
+                        path:path,
+                        name:item.name,
+                        children:item.children?.length? handleMenuList(item.children, path):[],
+                    }
+                    return newItem
+                })
+                return newList
+            }
+            const menuList = handleMenuList(routerList,'');
             const height = document.documentElement.clientHeight - 60;
-            console.log(height,3445)
             const isCollapse = ref(false)
             const handleOpen = (key: string) => {
-                // console.log(key,3444555)
-                // console.log(123)
-                // return
                 router.push(key);
             }
             const handleClose = (key: string, keyPath: string[]) => {
@@ -71,6 +88,50 @@
                     </>
                 )
             }
+            const subMenuTitle = (name:string) => {
+                return {
+                    title:()=>(
+                        <>
+                            <span>{name}</span>
+                        </>
+                    )
+                }
+            }
+            const handleMenuDom = ()=>{
+                return menuList.map((item:any)=>{
+                    if(item.children.length){
+                        return (
+                            <>
+                                <el-sub-menu   index={item.path} v-slots={subMenuTitle(item.name)}>
+                                        {
+                                            item.children.map((childItem:any)=>{
+                                                return (
+                                                    <>
+                                                        <el-menu-item onClick={()=>handleOpen(childItem.path)} index={childItem.path}>
+                                                            {
+                                                                childItem.name
+                                                            }
+                                                        </el-menu-item>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                </el-sub-menu>
+                            </>
+                        )
+                    } else {
+                        return (
+                            <>
+                                <el-menu-item onClick={()=>handleOpen(item.path)} index={item.path}>
+                                    {
+                                        item.name
+                                    }
+                                </el-menu-item>
+                            </>
+                        )
+                    }
+                })
+            }
             return () => (
                 <>
                     <el-menu
@@ -78,27 +139,7 @@
                         onClose={handleClose}
                         style={{height:height+'px',}}
                     >
-                        <el-sub-menu   index="1" v-slots={titleSlot1}>
-                            <el-menu-item-group  v-slots={titleSlot2}>
-                                <el-menu-item index="1-1">item one</el-menu-item>
-                                <el-menu-item index="1-2">item two</el-menu-item>
-                            </el-menu-item-group>
-                            <el-menu-item-group onClick={handleOpen} title="Group Two">
-                                <el-menu-item index="1-3">item three</el-menu-item>
-                            </el-menu-item-group>
-                            <el-sub-menu index="1-4" v-slots={titleSlot3}>
-                                <el-menu-item index="1-4-1">item one</el-menu-item>
-                            </el-sub-menu>
-                        </el-sub-menu>
-                        <el-menu-item onClick={()=>handleOpen('/home/test')} index="test" v-slots={titleSlot4}>
-                            <el-icon><icon-menu /></el-icon>
-                        </el-menu-item>
-                        <el-menu-item index="3" disabled v-slots={titleSlot5}>
-                            <el-icon><Document /></el-icon>
-                        </el-menu-item>
-                        <el-menu-item index="4" v-slots={titleSlot6}>
-                            <el-icon><Setting /></el-icon>
-                        </el-menu-item>
+                        {handleMenuDom()}
                     </el-menu>
                 </>
             )
