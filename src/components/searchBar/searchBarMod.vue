@@ -115,7 +115,7 @@ export default defineComponent({
         return () => (
             <>
                 <el-row class="searchBox">
-                    <el-form style="width:100%;" label-width={searchBarConfig.labelWidth || 80} inline={true} model={formInline} class="demo-form-inline">
+                    <el-form style="width:100%;" label-width={searchBarConfig.labelWidth || 80} inline={true} model={query} class="demo-form-inline">
                         {searchDom()}
                     </el-form>
                 </el-row>
