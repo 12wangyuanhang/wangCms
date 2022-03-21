@@ -1,11 +1,34 @@
-# Vue 3 + Typescript + Vite
+# tableMod组件
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+    三个自定义的值 tablePage tableData tableColumn
 
-## Recommended IDE Setup
+    tablePage为page的双向绑定值其中包含=> {
+                                        total: 0,
+                                        currentPage: 1,
+                                        pageSize: 10
+                                      }
+    tableColumn 为表格的配置项接口为=> interface TableColumn {
+                                        tableType?:string,
+                                        tableCode:string,
+                                        tableLabel:string,
+                                        tableWidth?:number,
+                                        showOverflow:boolean,
+                                    }
+    其中tableType为btn的时候为按钮列表通过插槽来改变可多样性后续可修改
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+    tableData 为后台接口获取的数据与tableColumn配置项相辅相成
 
-## Type Support For `.vue` Imports in TS
+# searchBarMod组件
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+    此组件为上下两部分: 搜索和按钮
+
+    四个自定义值 searchBarData query searchBarConfig searchBtnData
+
+    searchBarData
+
+    懒得写了暂时先自己去看吧
+
+# chooseMod组件
+
+
+    懒得写了暂时先自己去看吧

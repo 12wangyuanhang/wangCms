@@ -92,6 +92,7 @@
                 return {
                     title:()=>(
                         <>
+                            <el-icon><Setting /></el-icon>
                             <span>{name}</span>
                         </>
                     )
@@ -123,6 +124,8 @@
                         return (
                             <>
                                 <el-menu-item onClick={()=>handleOpen(item.path)} index={item.path}>
+                                    <el-icon><Setting /></el-icon>
+
                                     {
                                         item.name
                                     }

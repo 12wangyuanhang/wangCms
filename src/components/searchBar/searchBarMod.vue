@@ -94,7 +94,6 @@ export default defineComponent({
         }
 
         const labelSlot = (label:any) =>{
-            console.log(label,34445)
             const type = tools.typeCheck(label);
             if(type == '[object Function]' || type == '[object AsyncFunction]'){
                 return {

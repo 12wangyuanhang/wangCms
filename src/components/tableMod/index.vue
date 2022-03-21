@@ -25,6 +25,15 @@
         tableLabel:string,
         tableWidth?:number,
         showOverflow:boolean,
+        btnData?:BtnData[]
+    }
+    interface BtnData {
+        type:string,
+        text:string,
+        doEventClick:EventType
+    }
+    interface EventType {
+        ():any
     }
     export default {
         props:{
@@ -86,7 +95,7 @@
                 this.gridOptions.columns = this.tableColumn.map((item:any)=>{
                     let reItem = {
                         title: item.tableLabel,
-                        showOverflow:true,
+                        showOverflow:item.showOverflow || true,
                     } as any;
                     if(item.tableType && item.tableType == 'btn'){
                         this.tableBtnData = item.btnData;
