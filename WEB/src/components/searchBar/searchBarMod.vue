@@ -4,7 +4,7 @@ import ChooseMod from '../chooseMod/index.vue';
 import tools from '../../utils/tools'
 interface SearchBarDataMod {
     searchType:string,
-    searchLabel?:any,
+    searchLabel:any,
     searchCode:string,
     placeHolder?:string,
     span?:number,
@@ -58,6 +58,9 @@ export default defineComponent({
                 <>
                     {
                         searchBarData && searchBarData.map((item,index)=>{
+                            if(!item.searchType){
+                                item.searchType = 'typeInput';
+                            }
                             const newItem = tools.searchBarToos(item);
                             const getLabelWidth = (item:SearchBarDataMod) => {
                                 if(item.searchLabel){
@@ -79,11 +82,20 @@ export default defineComponent({
             )
         }
         function searchBtnDom(){
-
+            // const newBtnData:any = searchBtnData.map((item)=>{
+            //     if(item.authBtn !== ''){
+                    
+            //     }
+            // })
+            searchBtnData.forEach((item,index)=>{
+                if(item.authBtn === ''){
+                    delete searchBtnData[index]
+                }
+            })
             return (
                 <>
                     {
-                        searchBtnData && searchBtnData.map((item,index)=>{
+                        searchBtnData && searchBtnData.map((item:any)=>{
                             return (
                                 <el-button {...item.btnPrivate}>{item.btnText}</el-button>
                             )

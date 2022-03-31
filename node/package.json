@@ -1,0 +1,22 @@
+{
+    "name": "koa-node",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "start": "node main.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "debug": "^3.1.0",
+        "koa": "^2.11.0",
+        "koa-body": "^4.1.1",
+        "koa-cors": "0.0.16",
+        "koa-router": "^7.4.0",
+        "koa-static": "^5.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
+}

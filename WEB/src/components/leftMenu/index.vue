@@ -108,10 +108,7 @@
                                             item.children.map((childItem:any)=>{
                                                 return (
                                                     <>
-                                                        <el-menu-item onClick={()=>handleOpen(childItem.path)} index={childItem.path}>
-                                                            {
-                                                                childItem.name
-                                                            }
+                                                        <el-menu-item onClick={()=>handleOpen(childItem.path)} index={childItem.path} v-slots={subMenuTitle(childItem.name)}>
                                                         </el-menu-item>
                                                     </>
                                                 )

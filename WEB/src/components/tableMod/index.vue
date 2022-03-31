@@ -1,6 +1,6 @@
 <template>
     <div class="tableBox">
-        <vxe-grid ref="tableBox" v-bind="gridOptions">
+        <vxe-grid ref="tableBox" v-bind="gridOptions" @checkbox-change="selectChangeEvent">
             <template #pager>
                 <vxe-pager
                     :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
@@ -10,8 +10,8 @@
                     @page-change="handlePageChange">
                 </vxe-pager>
             </template>
-            <template #operate="{ row }">
-                <el-button :type="item.type" v-for="(item, index) in tableBtnData" :key="index" @click="item.doEventClick(row)">{{item.text}}</el-button>
+            <template #operate="scoped">
+                <el-button :type="item.type" v-for="(item, index) in tableBtnData" :key="index" @click="item.doEventClick(scoped)">{{item.text}}</el-button>
             </template>
         </vxe-grid>
     </div>    
@@ -19,6 +19,7 @@
 
 <script lang="ts">
     import { PropType } from 'vue';
+    import {VxeTableInstance} from 'vxe-table'
     interface TableColumn {
         tableType?:string,
         tableCode:string,
@@ -83,6 +84,10 @@
             this.gridOptions.height = height - 10;
         },
         methods:{
+            selectChangeEvent(data:any){
+                let checkData = data.$table.getCheckboxRecords();
+                this.$emit('checkData',checkData);
+            },
             handlePageChange({currentPage, pageSize}:any){
                 this.tablePage.currentPage = currentPage
                 this.tablePage.pageSize = pageSize

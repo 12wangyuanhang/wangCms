@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import Header from '@/components/height/index.vue';
+    import Header from '@/components/header/index.vue';
     import LeftMenu from '@/components/leftMenu/index.vue';
     export default {
         components: {
