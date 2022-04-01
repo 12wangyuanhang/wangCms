@@ -10,7 +10,7 @@ function createDialog(app:App, opt:any){
         opt.callBack = (dialogData:any)=>{
             resolve(dialogData);
         }
-
+        console.log(opt,'opt')
         const vm = createVNode(
             DialogDom,
             opt as any,

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+console.log(import.meta.glob('../views/**.view.vue'),444444)
 const router = createRouter({
     history: createWebHistory(),
     routes: [

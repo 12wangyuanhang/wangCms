@@ -102,7 +102,9 @@ export default {
                         type:'primary',
                         onClick: ()=>{
                             console.log(1234);
-                        }
+                        },
+                        // style:'width:200px;',
+                        // round:true,
                     }
                 },
                 {
@@ -134,7 +136,8 @@ export default {
                     searchCode:'linkId',
                     searchLabel:()=><div style="color:red;">链路Id</div>,
                     privateData:{
-                        placeholder:'链路Id'
+                        placeholder:'链路Id',
+                        // style:'width:300px;'
                     },
                 },
                 {
@@ -205,6 +208,9 @@ export default {
                             },{
                                 value:'456',
                                 label:'去'
+                            },{
+                                value:'789',
+                                label:'中间'
                             }
                         ]
                     },
@@ -248,9 +254,11 @@ export default {
         },
         async findList (){
             let data = {
-                adc:123,
+                currentPage:this.tablePage.currentPage,
+                pageSize:this.tablePage.pageSize,
             }
             let res = await this.$http.post('/api/getData',data);
+            this.tablePage.total = res.result.total;
             this.tableData = res.result.dataList;
             // this.$refs.testTableRef.gridOptions.loading = true;
             // setTimeout(() => {

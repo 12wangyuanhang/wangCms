@@ -34,7 +34,7 @@
                 type: String,
                 default: () => '15vh'
             },
-            callback: {
+            callBack: {
                 type: Function
             },
         },
@@ -68,7 +68,8 @@
             },
             doCancel(action: any) {
                 this.open = false;
-                (this as any).callback(action);
+                console.log(this,34445);
+                (this as any).callBack(action);
             },
         }
     })

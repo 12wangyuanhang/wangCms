@@ -57,7 +57,8 @@
         },
         watch:{
             tableData(val){
-                this.pageSet();
+                // this.pageSet();
+                this.gridOptions.data = val;
             },
         },
         data(){
@@ -116,24 +117,24 @@
                 // this.gridOptions.columns.push({ title: '操作', width: 200, slots:{ default: 'operate' } })
                 this.gridOptions.columns.unshift({ type: 'checkbox', width: 50 })
             },
-            pageSet(){
-                if(this.tableData.length <= this.tablePage.pageSize){
-                    this.gridOptions.data = this.tableData;
-                } else {
-                    let num = Math.floor(this.tableData.length/this.tablePage.pageSize);
-                    if(this.tablePage.pageSize < this.tableData.length){
-                        if(num >= this.tablePage.currentPage){
-                            this.gridOptions.data = this.tableData.slice((this.tablePage.currentPage-1)*this.tablePage.pageSize,this.tablePage.currentPage*this.tablePage.pageSize)
-                        } else {
-                            let reNum = this.tableData.length%this.tablePage.pageSize;
-                            this.gridOptions.data = this.tableData.slice(this.tableData.length-reNum, this.tableData.length)
-                        }
-                    } else {
-                        this.gridOptions.data = this.tableData;
-                    }
-                }
-                this.tablePage.total = this.tableData.length;
-            },
+            // pageSet(){
+            //     if(this.tableData.length <= this.tablePage.pageSize){
+            //         this.gridOptions.data = this.tableData;
+            //     } else {
+            //         let num = Math.floor(this.tableData.length/this.tablePage.pageSize);
+            //         if(this.tablePage.pageSize < this.tableData.length){
+            //             if(num >= this.tablePage.currentPage){
+            //                 this.gridOptions.data = this.tableData.slice((this.tablePage.currentPage-1)*this.tablePage.pageSize,this.tablePage.currentPage*this.tablePage.pageSize)
+            //             } else {
+            //                 let reNum = this.tableData.length%this.tablePage.pageSize;
+            //                 this.gridOptions.data = this.tableData.slice(this.tableData.length-reNum, this.tableData.length)
+            //             }
+            //         } else {
+            //             this.gridOptions.data = this.tableData;
+            //         }
+            //     }
+            //     this.tablePage.total = this.tableData.length;
+            // },
         },
     }
 </script>

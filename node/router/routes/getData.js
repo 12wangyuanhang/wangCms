@@ -1,16 +1,23 @@
 let database = require('../../database/index.js');
 
 async function handle(ctx, next) {
-    if (ctx.request.body) {
+    let params = ctx.request.body;
+    
+    if (params.currentPage && params.pageSize) {
         let messageData = await database.getMessage();
-        console.log(messageData)
+        let resolveData = []
+        if(params.pageSize*params.currentPage >= messageData.length){
+            resolveData = messageData.slice(params.pageSize*(params.currentPage-1),messageData.length)
+        }else{
+            resolveData = messageData.slice(params.pageSize*(params.currentPage-1),params.pageSize*params.currentPage)
+        }
         let json = {
             status: 0,
             result: {
-                "currentPage": "1",
-                "pageSize": "20",
-                "total": messageData.length,
-                dataList: messageData
+                currentPage: params.currentPage,
+                pageSize: params.pageSize,
+                total: messageData.length,
+                dataList: resolveData
             },
             msg: '获取成功'
         };

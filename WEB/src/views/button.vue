@@ -21,13 +21,14 @@
         },
         methods:{
             async handleDialog(){
-                await this.$dialog({
+                let res = await this.$dialog({
                     title:'弹窗',
                     components:Demo2,
                     props:{
                         abc:'1234',
                     }
                 })
+                console.log(res,345)
             },
         },
     };
