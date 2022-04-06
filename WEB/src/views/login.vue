@@ -39,7 +39,7 @@ export default defineComponent({
             formEl.validate((valid:Boolean) => {
                 if (valid) {
                     console.log('submit!')
-                    router.push('/home')
+                    router.push('/home/test')
                 } else {
                     console.log('error submit!')
                     return false

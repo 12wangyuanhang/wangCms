@@ -25,7 +25,11 @@
                     if(parentPath){
                         path = parentPath + '/' + item.path;
                     } else {
-                        path = '/home/'+item.path;
+                        if(/(\/home)/g.test(item.path)){
+                            path = item.path;
+                        }else{
+                            path = '/home/'+item.path;
+                        }
                     }
                     let newItem = {
                         path:path,

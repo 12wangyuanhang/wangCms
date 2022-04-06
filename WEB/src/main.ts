@@ -11,7 +11,7 @@ import 'element-plus/dist/index.css'
 import dialog from './components/dialog/index';
 import http from './http/index'
 import * as ElIcons from '@element-plus/icons-vue';
-
+import * as echarts from 'echarts';
 function useTable(app:App){
     app.use(VXETable)
 }
@@ -23,6 +23,7 @@ declare module "@vue/runtime-core" {
         $confirm: any;
         $dialog: any;
         $cityNameCache: any;
+        $echarts: any
     }
 
 }
@@ -35,7 +36,7 @@ declare module '*.gif'
 
 const app = createApp(AppDom);
 
-
+app.config.globalProperties.$echarts = echarts;
 app.config.globalProperties.$http = http;
 app.use(useTable);
 app.use(ElementPlus);

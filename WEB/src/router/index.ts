@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router';
-console.log(import.meta.glob('../views/**.view.vue'),444444)
-const router = createRouter({
+import { createRouter, createWebHistory,Router } from 'vue-router';
+const viewsData = import.meta.glob('../views/**.view.vue');
+const router:Router = createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -53,5 +53,15 @@ const router = createRouter({
         // }
     ]
 })
-
+for(let name in viewsData){
+    let newName = name.replace(/\..\/views\/(.*?)\.view.vue/,'$1');
+    let item = {
+        path:newName,
+        name:newName.charAt(0).toLocaleUpperCase() + newName.slice(1),
+        component:viewsData[name],
+    }
+    router.options.routes[1].children?.push(item);
+    router.addRoute('home',item);
+}
+console.log(router,9000);   
 export default router;
