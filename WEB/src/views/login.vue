@@ -1,15 +1,16 @@
 <script lang="tsx">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref, getCurrentInstance } from 'vue';
 import type { ElForm } from 'element-plus';
 import { useRouter } from 'vue-router'; 
 type FormInstance = InstanceType<typeof ElForm>;
 export default defineComponent({
     setup(){
+        const { proxy }:any = getCurrentInstance();
         const router = useRouter();
         const ruleFormRef = ref<FormInstance>()
         const ruleForm = reactive({
-            passWord: '',
-            userName:''
+            userName:'12345678',
+            passWord: '666666',
         })
         // const validatePass = (rule: any, value: any, callback: any) => {
         //     if (value === '') {
@@ -34,12 +35,22 @@ export default defineComponent({
         }
         
         const submitForm = (formEl:any) => {
-            console.log(formEl);
             if (!formEl) return
-            formEl.validate((valid:Boolean) => {
+            formEl.validate(async (valid:boolean) => {
                 if (valid) {
                     console.log('submit!')
-                    router.push('/home/test')
+                    let params = {
+                        userName:ruleForm.userName,
+                        passWord:ruleForm.passWord
+                    }
+                    let res = await proxy.$http.post('/api/login',params)
+                    if(res.status == 0){
+                        localStorage.setItem('token',res.result.token)
+                        router.push('/home/test')
+                    } else {
+                        proxy.$message.error(res.msg)
+                    }
+
                 } else {
                     console.log('error submit!')
                     return false

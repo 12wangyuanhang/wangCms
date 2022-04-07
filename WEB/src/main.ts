@@ -41,7 +41,7 @@ app.config.globalProperties.$http = http;
 app.use(useTable);
 app.use(ElementPlus);
 app.use(router);
-app.use(dialog)
+app.use(dialog);
 // for (const name in ElIcons){
 // 	app.component(name,(ElIcons as any)[name])
 // }

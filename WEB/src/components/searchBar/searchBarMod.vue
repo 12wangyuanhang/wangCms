@@ -139,9 +139,9 @@ export default defineComponent({
     },
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     
-    .el-form--inline,.el-form-item {
+    ::v-deep.el-form--inline,::v-deep.el-form-item {
         margin: 10px 5px!important;
     }
     .el-row{

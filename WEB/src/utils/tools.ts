@@ -1,4 +1,4 @@
-
+import router from '../router/index'
 class Tools {
     constructor(){
 
@@ -16,7 +16,10 @@ class Tools {
     typeCheck(type:any){
         return Object.prototype.toString.call(type);
     }
-
+    doLogout(){
+        router.push('/login')
+        localStorage.removeItem('token');
+    }
 }
 
 export default new Tools();

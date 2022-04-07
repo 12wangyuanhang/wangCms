@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-
+import { ElMessage } from 'element-plus';
+import tools from '../utils/tools';
 const http = axios.create({
     timeout:60000,
     baseURL:'/',
@@ -11,6 +12,9 @@ const http = axios.create({
 
 // 请求拦截器
 http.interceptors.request.use((config: AxiosRequestConfig) => {
+    if(window.localStorage.getItem('token')){
+        (config as any).headers.token = `Bearer ${window.localStorage.getItem('token')}`;
+    }
     return config
 }, (error) => {
     // 错误抛到业务代码
@@ -20,6 +24,7 @@ http.interceptors.request.use((config: AxiosRequestConfig) => {
 })
 // 根据不同的状态码，生成不同的提示信息
 const showStatus = (status:number) => {
+    console.log(status,'status')
     let message = ''
     // 这一坨代码可以使用策略模式进行优化
     switch (status) {
@@ -27,7 +32,10 @@ const showStatus = (status:number) => {
             message = '请求错误(400)'
             break
         case 401:
-            message = '未授权，请重新登录(401)'
+            console.log(77777777)
+            message = '未授权，请重新登录(401)';
+            ElMessage.error(message);
+            tools.doLogout();
             break
         case 403:
             message = '拒绝访问(403)'
@@ -64,7 +72,7 @@ const showStatus = (status:number) => {
 
 // 响应拦截器
 http.interceptors.response.use((response: AxiosResponse) => {
-    const status = response.status
+    const status = response.status;
     let msg = ''
     if (status < 200 || status >= 300) {
         // 处理http错误，抛到业务代码
@@ -81,10 +89,10 @@ http.interceptors.response.use((response: AxiosResponse) => {
 
     return response.data
 }, (error) => {
+    let data = error.response.data;
+    data.msg = showStatus(error.response.status);
     // 错误抛到业务代码
-    error.data = {}
-    error.data.msg = '请求超时或服务器异常，请检查网络或联系管理员！'
-    return Promise.resolve(error)
+    return Promise.resolve(data)
 })
 
 export default http

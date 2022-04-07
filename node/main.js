@@ -10,7 +10,7 @@ const serve = require('koa-static');
 // const views = require('koa-views')
 const cors = require("koa-cors");
 // 自行创建文件
-
+const koaJwt = require('koa-jwt')
 // const response = require('./response.js');
 const httpPort = require("./config");
 let router = require('./router/index.js');
@@ -29,9 +29,29 @@ app.use(koaBody({
     multipart: true, // 是否支持 multipart-formdate 的表单
     urlencoded: true,
 }))
+
+
 app.use(cors());
 // app.use(koaBody());
 app.use(router.routes());
+app.use(async (ctx,next)=>{
+    return next().catch((err)=>{
+        if(err.status === 401){
+            ctx.status = 401;
+            ctx.body = {
+                status:1,
+                msg:'登录过期，请重新登录'
+            }
+        } else {
+            throw err;
+        }
+    })
+})
+app.use(koaJwt({
+    secret:'123456'
+}).unless({
+    path:[/^\/api\/login/]
+}))
 app.listen(httpPort.httpPort, () => {
     console.log('server is running localhost:' + httpPort.httpPort);
 });
