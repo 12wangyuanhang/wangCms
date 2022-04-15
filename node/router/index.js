@@ -14,7 +14,7 @@ routes.forEach(r => {
             if(token){
                 try{
                     const result = await tools.verToken(token)
-                    console.log(result,9000)
+                    // console.log(result,9000)
                     return r.handle(ctx, next)
                 }catch(err){
                     ctx.status = 401;

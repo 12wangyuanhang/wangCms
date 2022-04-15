@@ -53,7 +53,6 @@ export default defineComponent({
         })
         
         function searchDom(){
-            
             return (
                 <>
                     {
@@ -141,7 +140,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
     
-    ::v-deep.el-form--inline,::v-deep.el-form-item {
+    ::v-deep .el-form--inline,::v-deep .el-form-item {
         margin: 10px 5px!important;
     }
     .el-row{

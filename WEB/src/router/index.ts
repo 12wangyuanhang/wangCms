@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory,Router } from 'vue-router';
 const viewsData = import.meta.glob('../views/**.view.vue');
+console.log(viewsData,45)
 const router:Router = createRouter({
     history: createWebHistory(),
     routes: [

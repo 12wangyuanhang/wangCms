@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-    import { PropType } from 'vue';
+    import { PropType,defineComponent } from 'vue';
     import {VxeTableInstance} from 'vxe-table'
     interface TableColumn {
         tableType?:string,
@@ -34,9 +34,9 @@
         doEventClick:EventType
     }
     interface EventType {
-        ():any
+        ():Function
     }
-    export default {
+    export default defineComponent({
         props:{
             tablePage:{
                 type: Object,
@@ -136,7 +136,7 @@
             //     this.tablePage.total = this.tableData.length;
             // },
         },
-    }
+    })
 </script>
 <style lang="scss" scoped>
     .tableBox{

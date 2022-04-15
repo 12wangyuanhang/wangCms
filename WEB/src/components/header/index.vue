@@ -5,12 +5,14 @@
         CloseBold,
         Avatar
     } from '@element-plus/icons-vue'
+    import { useRouter } from 'vue-router';
     import SlotJsx from './slots.vue'
     export default defineComponent({
         components:{
             SlotJsx,
         },
         setup(props, { slots }){
+            let { push } = useRouter();
             const { proxy }:any  = getCurrentInstance();
             const iconName = ref('Setting')
             const Slots = {
@@ -28,7 +30,12 @@
                 </>
             );
             const handleCommand = (command: string | number | object) => {
-                proxy.$message.success(command)
+                if(command == 'psw'){
+                    proxy.$message.success('修改密码')
+                } else if(command == 'layout') {
+                    push('/login');
+                    localStorage.removeItem('token');
+                }
             }
             return () => (
                 <>

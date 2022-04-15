@@ -49,7 +49,7 @@
                 this.loading = val;
             })
         },
-        onBeforeUnmount() {
+        beforeMount() {
             Bus.$off('changeLoading');
         },
         methods: {

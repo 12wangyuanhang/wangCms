@@ -1,5 +1,5 @@
 <script lang="tsx">
-    import { defineComponent, ref } from 'vue';
+    import { defineComponent, ref, watch } from 'vue';
      import {
         Location,
         Document,
@@ -18,6 +18,7 @@
         setup(){
             const router = useRouter();
             const routerList:any = router.options.routes[1].children;
+            const refData = ref(null);
 
             function handleMenuList(list:object[],parentPath:string){
                 const newList:any = list.map((item:any)=>{
@@ -141,6 +142,7 @@
                     <el-menu
                         class="el-menu-vertical-demo"
                         onClose={handleClose}
+                        ref={refData.value}
                         style={{height:height+'px',}}
                     >
                         {handleMenuDom()}
