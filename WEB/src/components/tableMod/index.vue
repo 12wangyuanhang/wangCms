@@ -10,23 +10,29 @@
                     @page-change="handlePageChange">
                 </vxe-pager>
             </template>
-            <template #operate="scoped">
-                <el-button :type="item.type" v-for="(item, index) in tableBtnData" :key="index" @click="item.doEventClick(scoped)">{{item.text}}</el-button>
+            <template #operate="scope">
+                <el-button :type="item.type" v-for="(item, index) in tableBtnData" :key="index" @click="handleSoltBtn(item, scope)">{{item.text}}</el-button>
             </template>
+            <!-- <template  v-for="item in gridOptions.columns" v-slot:[item.slotData.soltName+'_edit']="{}">
+                
+            </template> -->
+
         </vxe-grid>
     </div>    
 </template>
 
-<script lang="ts">
+<script lang="tsx">
     import { PropType,defineComponent } from 'vue';
-    import {VxeTableInstance} from 'vxe-table'
+    import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
     interface TableColumn {
         tableType?:string,
         tableCode:string,
         tableLabel:string,
         tableWidth?:number,
         showOverflow:boolean,
-        btnData?:BtnData[]
+        btnData?:BtnData[],
+        isSlots?:Boolean,
+        slotData?:any
     }
     interface BtnData {
         type:string,
@@ -66,15 +72,22 @@
                 gridOptions:{
                     border: true,
                     height: 600,
+                    keepSource: true,
                     align: 'center',
                     loading:false,
                     columnConfig: {
                         resizable: true
                     },
+                    editConfig: {
+                        trigger: 'manual',
+                        mode: 'row',
+                        showStatus: true
+                    },
                     data:[],
                     columns: []
-                } as any,
-                tableBtnData:[],
+                } as VxeGridProps,
+                tableBtnData: [],
+                tableBtnDataC: [],
             }
         },
         created(){
@@ -97,14 +110,85 @@
             removeRowEvent(row:any){
                 console.log(row,4445555)
             },
+            handleSoltBtn(item:any, scope:any){
+                const row = scope.row;
+                if(item.text == '编辑'){
+                    row.isSlots= true;
+                    this.tableBtnData = this.tableBtnDataC?.filter(item=>item.text!='编辑');
+                    return item.doEventClick(scope);
+                } else if(item.text == '保存'){
+                    row.isSlots= false;
+                    this.gridOptions.loading = true;
+                    this.tableBtnData = this.tableBtnDataC?.filter(item=>item.text!='保存');
+                    return item.doEventClick(scope, this.gridOptions);
+                } else {
+                    return item.doEventClick(scope);
+                }
+            },
+            typeCheck(type:any){
+                return Object.prototype.toString.call(type);
+            },
+            optionsDom(query, item){
+                let type = this.typeCheck(item.options)
+                if(type == '[object Function]' || type == '[object AsyncFunction]'){
+                    return (
+                        item.options(query, item).map((optItem:any,)=>{
+                            return (
+                                <vxe-option
+                                    key={optItem.value}
+                                    label={optItem.label}
+                                    value={optItem.value}
+                                />
+                            )
+                        })
+                    )
+                }else {
+                    return (
+                        item.options.map((optItem:any)=>{
+                            return (
+                                <vxe-option
+                                    key={optItem.value}
+                                    label={optItem.label}
+                                    value={optItem.value}
+                                />
+                            )
+                        })
+                    )
+                }
+            },
             handleTableCol(){
-                this.gridOptions.columns = this.tableColumn.map((item:any)=>{
+                this.gridOptions.columns = this.tableColumn.map((item:TableColumn)=>{
                     let reItem = {
                         title: item.tableLabel,
                         showOverflow:item.showOverflow || true,
                     } as any;
+                    if(item.isSlots){
+                        reItem.slots = {
+                            default: ({ row }) => {
+                                if(row.isSlots){
+                                    console.log(item.slotData.slotType)
+                                    if(item.slotData.slotType == 'typeInput'){
+                                        return <vxe-input v-model={row[item.tableCode]}></vxe-input>
+                                    }else if (item.slotData.slotType == 'typeSelect'){
+                                        return (
+                                            <vxe-select v-model={row[item.tableCode]} transfer>
+                                                {
+                                                    this.optionsDom(row[item.tableCode], item.slotData)
+                                                }
+                                            </vxe-select>
+                                        )
+                                    }else{
+                                        return <span>{row[item.tableCode]}</span>
+                                    }
+                                } else {
+                                    return <span>{row[item.tableCode]}</span>
+                                }
+                            }
+                        };
+                    }
                     if(item.tableType && item.tableType == 'btn'){
-                        this.tableBtnData = item.btnData;
+                        this.tableBtnDataC = item.btnData;
+                        this.tableBtnData = item.btnData?.filter(item=>item.text!='保存');
                         reItem.slots =  { default: 'operate' };
                     } else {
                         reItem.field = item.tableCode;
@@ -142,4 +226,7 @@
     .tableBox{
         padding: 0 10px;
     }
+    // :deep(.vxe-select--panel){
+    //     z-index: 100111111!important;
+    // }
 </style>

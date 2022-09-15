@@ -22,6 +22,8 @@
 <script>
     import Header from '@/components/header/index.vue';
     import LeftMenu from '@/components/leftMenu/index.vue';
+    import cyData from '../utils/getDatabyName'
+    import tools from '../utils/tools'
     export default {
         components: {
             Header,
@@ -30,10 +32,23 @@
         data() {
             return {
                 height:document.documentElement.clientHeight - 60,
-                iconName:'Setting'
+                iconName:'Setting',
+                // fullscreenLoading:false,
             }
         },
         mounted(){
+            // console.log(tools)
+            // tools.openFullScreen()
+
+            // // this.fullscreenLoading = true;
+            // setTimeout(()=>{
+            //     // this.fullscreenLoading = false;
+            //     tools.closeLoading()
+            // },2000)
+            console.log(cyData(), 900000)
+        },
+        methods:{
+            
         }
     }
 </script>

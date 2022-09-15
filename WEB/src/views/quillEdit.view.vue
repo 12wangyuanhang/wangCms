@@ -104,7 +104,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-    ::v-deep .ql-editor {
+    :deep(.ql-editor) {
         min-height: 300px;
     }
 </style>

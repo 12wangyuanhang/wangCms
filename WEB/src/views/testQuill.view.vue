@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    ::v-deep .ql-editor {
+    :v-deep(.ql-editor) {
         min-height: 300px;
     }
 </style>

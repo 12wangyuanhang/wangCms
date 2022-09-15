@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import Vue,{ createApp } from 'vue';
 import type {App} from 'vue';
 import AppDom from './App.vue'
 import './assets/index.css';
@@ -35,14 +35,15 @@ declare module '*.jpeg'
 declare module '*.gif'
 
 const app = createApp(AppDom);
-
+sessionStorage.setItem('dataName', 'CD')
 app.config.globalProperties.$echarts = echarts;
 app.config.globalProperties.$http = http;
 app.use(useTable);
 app.use(ElementPlus);
 app.use(router);
 app.use(dialog);
-// for (const name in ElIcons){
-// 	app.component(name,(ElIcons as any)[name])
-// }
+console.log(ElIcons, 877);
+for (const name in ElIcons){
+	app.component(name,(ElIcons as any)[name])
+}
 app.mount('#app');

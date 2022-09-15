@@ -20,6 +20,18 @@ import Demo3 from './demo3.vue'
             }
         },
         mounted(){
+            // console.log(this.$route.matched);
+            // this.$route.matched.forEach(item => {
+            //     console.log(item,87772)
+            //     item.meta.isCheck = true;
+            // });
+            // console.log(this.$route,9888)
+
+            this.$router.options.routes[1].meta = {
+                isCheck:true
+            };
+
+            console.log(this.$router.options);
             // console.log(this.props,'344')
         },
         data() {

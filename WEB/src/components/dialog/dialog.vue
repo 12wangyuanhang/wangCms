@@ -68,7 +68,6 @@
             },
             doCancel(action: any) {
                 this.open = false;
-                console.log(this,34445);
                 (this as any).callBack(action);
             },
         }

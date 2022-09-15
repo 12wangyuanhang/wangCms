@@ -19,6 +19,12 @@
         components:{
             Demo2
         },
+        computed:{
+
+        },
+        mounted(){
+            console.log(this.$router.options);
+        },
         methods:{
             async handleDialog(){
                 let res = await this.$dialog({

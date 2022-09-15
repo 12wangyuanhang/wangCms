@@ -16,22 +16,34 @@ const router:Router = createRouter({
                 {
                     path:'test',
                     name:'Test',
-                    component: () => import('../views/test.vue')
+                    component: () => import('../views/test.vue'),
+                    meta: {
+                        icon:'AddLocation'
+                    }
                 },
                 {
                     path:'button',
                     name:'Button',
-                    component: () => import('../views/button.vue')
+                    component: () => import('../views/button.vue'),
+                    meta: {
+                        icon:'AlarmClock'
+                    }
                 },
                 {
                     path:'demo',
                     name:'Demo',
                     component: () => import('../views/demo.vue'),
+                    meta: {
+                        icon:'AddLocation'
+                    },
                     children:[
                         {
                             path:'demo2',
                             name:'Demo2',
                             component: () => import('../views/demo2.vue'),
+                            meta: {
+                                icon:'Apple'
+                            }
                         }
                     ]
                 },
@@ -64,5 +76,5 @@ for(let name in viewsData){
     router.options.routes[1].children?.push(item);
     router.addRoute('home',item);
 }
-console.log(router,9000);   
+// console.log(router,9000);   
 export default router;

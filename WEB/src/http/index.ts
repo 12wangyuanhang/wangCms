@@ -10,11 +10,19 @@ const http = axios.create({
     },
 })
 
+const _proviteData = {
+    loadingFlag: true
+}
 // 请求拦截器
 http.interceptors.request.use((config: AxiosRequestConfig) => {
+    console.log(config, '请求拦截器');
     if(window.localStorage.getItem('token')){
         (config as any).headers.token = `Bearer ${window.localStorage.getItem('token')}`;
     }
+    if(config.data.proviteData){
+        Object.assign(_proviteData, config.data.proviteData)
+    }
+    _proviteData.loadingFlag&&tools.openFullScreen();
     return config
 }, (error) => {
     // 错误抛到业务代码
@@ -32,7 +40,6 @@ const showStatus = (status:number) => {
             message = '请求错误(400)'
             break
         case 401:
-            console.log(77777777)
             message = '未授权，请重新登录(401)';
             ElMessage.error(message);
             tools.doLogout();
@@ -72,6 +79,7 @@ const showStatus = (status:number) => {
 
 // 响应拦截器
 http.interceptors.response.use((response: AxiosResponse) => {
+    // console.log(response, '响应拦截器')
     const status = response.status;
     let msg = ''
     if (status < 200 || status >= 300) {
@@ -86,7 +94,7 @@ http.interceptors.response.use((response: AxiosResponse) => {
             response.data.msg = msg
         }
     }
-
+    _proviteData.loadingFlag && tools.closeLoading();
     return response.data
 }, (error) => {
     let data = error.response.data;

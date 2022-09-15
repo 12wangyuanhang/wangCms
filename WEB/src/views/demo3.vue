@@ -17,6 +17,7 @@ export default {
     data(){
         return {
             b:this.arr,
+            
         }
     },
     watch:{

@@ -128,7 +128,7 @@ export default defineComponent({
                 }
                 return (
                     <div class="radioBox">
-                        <el-radio-group v-model={query[item.code]}>
+                        <el-radio-group {...item.privateData} v-model={query[item.code]}>
                             {radioDom()}
                         </el-radio-group>
                     </div>

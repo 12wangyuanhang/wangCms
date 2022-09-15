@@ -1,6 +1,6 @@
 <script lang="tsx">
-    import { defineComponent, ref, watch } from 'vue';
-     import {
+    import { defineComponent, ref, watch, resolveComponent, h, reactive } from 'vue';
+    import {
         Location,
         Document,
         Menu as IconMenu,
@@ -35,6 +35,7 @@
                     let newItem = {
                         path:path,
                         name:item.name,
+                        meta:item.meta??{},
                         children:item.children?.length? handleMenuList(item.children, path):[],
                     }
                     return newItem
@@ -42,6 +43,7 @@
                 return newList
             }
             const menuList = handleMenuList(routerList,'');
+            console.log(menuList, 87665)
             const height = document.documentElement.clientHeight - 60;
             const isCollapse = ref(false)
             const handleOpen = (key: string) => {
@@ -50,42 +52,14 @@
             const handleClose = (key: string, keyPath: string[]) => {
                 console.log(key, keyPath)
             }
-            const titleSlot1 = {
-                title:()=>(
-                    <>
-                        <el-icon><Location /></el-icon>
-                        <span>Navigator One</span>
-                    </>
-                )
-            }
-            const titleSlot2 = {
-                title:()=>(
-                    <>
-                        <span>Group One</span>
-                    </>
-                )
-            }
-            const titleSlot3 = {
-                title:()=>(
-                    <>
-                        <span>item four</span>
-                    </>
-                )
-            }
-            const titleSlot4 = {
-                title:()=>(
-                    <>
-                        <span>Navigator Two</span>
-                    </>
-                )
-            }
-            const titleSlot5 = {
-                title:()=>(
-                    <>
-                        <span>Navigator Three</span>
-                    </>
-                )
-            }
+            // const titleSlot1 = {
+            //     title:()=>(
+            //         <>
+            //             <el-icon><Location /></el-icon>
+            //             <span>Navigator One</span>
+            //         </>
+            //     )
+            // }
             const titleSlot6 = {
                 title:()=>(
                     <>
@@ -93,14 +67,21 @@
                     </>
                 )
             }
-            const subMenuTitle = (name:string) => {
+            const subMenuTitle = (item:any) => {
                 return {
                     title:()=>(
                         <>
-                            <el-icon><Setting /></el-icon>
-                            <span>{name}</span>
+                            <el-icon>{handleIcon(item.meta?.icon??'')}</el-icon>
+                            <span>{item.name}</span>
                         </>
                     )
+                }
+            }
+            const handleIcon = (icon:string) => {
+                if(icon){
+                    return (h(resolveComponent(icon)))
+                } else {
+                    return (<Setting></Setting>)
                 }
             }
             const handleMenuDom = ()=>{
@@ -108,12 +89,12 @@
                     if(item.children.length){
                         return (
                             <>
-                                <el-sub-menu   index={item.path} v-slots={subMenuTitle(item.name)}>
+                                <el-sub-menu   index={item.path} v-slots={subMenuTitle(item)}>
                                         {
                                             item.children.map((childItem:any)=>{
                                                 return (
                                                     <>
-                                                        <el-menu-item onClick={()=>handleOpen(childItem.path)} index={childItem.path} v-slots={subMenuTitle(childItem.name)}>
+                                                        <el-menu-item onClick={()=>handleOpen(childItem.path)} index={childItem.path} v-slots={subMenuTitle(childItem)}>
                                                         </el-menu-item>
                                                     </>
                                                 )
@@ -126,7 +107,7 @@
                         return (
                             <>
                                 <el-menu-item onClick={()=>handleOpen(item.path)} index={item.path}>
-                                    <el-icon><Setting /></el-icon>
+                                    <el-icon>{handleIcon(item.meta?.icon??'')}</el-icon>
 
                                     {
                                         item.name
@@ -149,7 +130,7 @@
                     </el-menu>
                 </>
             )
-        }
+        },
     })
 </script>
 <style lang="scss" scoped>

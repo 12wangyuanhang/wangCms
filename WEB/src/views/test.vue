@@ -45,9 +45,41 @@ export default {
                     tableCode:'name',
                     tableLabel:'Name',
                     tableWidth: 100,
+                    isSlots:true,
+                    slotData:{
+                        slotType: 'typeInput'
+                    },
                 },{
                     tableCode:'nickname',
                     tableLabel:'Nickname',
+                    isSlots:true,
+                    slotData:{
+                        slotType: 'typeSelect',
+                        options: [
+                            {
+                                value:'T2',
+                                label:'T2',
+                            },{
+                                value:'T3',
+                                label:'T3',
+                            },{
+                                value:'T4',
+                                label:'T4',
+                            },{
+                                value:'T5',
+                                label:'T5',
+                            },{
+                                value:'T6',
+                                label:'T6',
+                            },{
+                                value:'T7',
+                                label:'T7',
+                            },{
+                                value:'T8',
+                                label:'T8',
+                            },
+                        ]
+                    },
                 },{
                     tableCode:'role',
                     tableLabel:'Role',
@@ -63,17 +95,15 @@ export default {
                             type:'primary',
                             doEventClick:this.doDelete
                         },{
-                            text:'重置',
+                            text:'编辑',
                             type:'primary',
                             doEventClick:(row)=>{
                                 console.log(row, 12888888)
                             }
                         },{
-                            text:'添加',
+                            text:'保存',
                             type:'primary',
-                            doEventClick:(row)=>{
-                                console.log(row, 'oooo')
-                            }
+                            doEventClick:this.changeItem
                         }
                     ]
                 }
@@ -109,26 +139,29 @@ export default {
                 },
                 {
                     btnText:'查询',
-                    // authBtn:'',
                     btnPrivate:{
                         type:'success',
-                        onClick: ()=>{
-                            console.log(6788);
+                        onClick: (e)=>{
+                            console.log(6788,e);
                             this.doSearch();
                         },
+                        // plain:true,
+                        icon:"Edit",
+                        circle:true
                         // round:true,
                     }
                 },
-                // {
-                //     btnText:'删除',
-                //     btnPrivate:{
-                //         type:'danger',
-                //         onClick: ()=>{
-                //             console.log('ooooo');
-                //             // this.doSearch();
-                //         },
-                //     }
-                // }
+                {
+                    btnText:'删除',
+                    authBtn:'',
+                    btnPrivate:{
+                        type:'danger',
+                        onClick: ()=>{
+                            console.log('ooooo');
+                            // this.doSearch();
+                        },
+                    }
+                }
             ],
             searchData:[
                 {
@@ -194,7 +227,10 @@ export default {
                         ]
                     },
                     privateData:{
-                        placeholder: '下拉框2'
+                        placeholder: '下拉框2',
+                        onChange:(e)=>{
+                            console.log(e, 'eeee')
+                        },
                     },
                 },{
                     searchType:'typeRadio',
@@ -238,6 +274,12 @@ export default {
         getCheckData(data){
             this.checkRows = data;
         },
+        async changeItem(data, gridOptions){
+            const res = await this.$http.post('/api/changeItem',{index:data.rowIndex,rowData:data.row})
+            this.$message.success(res.msg)
+            this.doSearch();
+            gridOptions.loading = false;
+        },
         async doDelete(data){
             console.log(data)
             const res = await this.$http.post('/api/deleteItem',{index:data.rowIndex})
@@ -256,10 +298,16 @@ export default {
             let data = {
                 currentPage:this.tablePage.currentPage,
                 pageSize:this.tablePage.pageSize,
+                proviteData:{
+                    loadingFlag:true
+                }
             }
             let res = await this.$http.post('/api/getData',data);
             this.tablePage.total = res.result.total;
-            this.tableData = res.result.dataList;
+            this.tableData = res.result.dataList.map((item)=>{
+                item.isSlots = false;
+                return item;
+            });
             // this.$refs.testTableRef.gridOptions.loading = true;
             // setTimeout(() => {
             //     const data = [
